@@ -31,8 +31,8 @@ module.exports = {
       console.log(
         `********************${eventName} ${configuration} is not synced yet.********************`
       )
-      if (attempts < 10) {
-        await delay(2000)
+      if (attempts < 100) {
+        await delay(500)
         attempts++
         return check()
       }
