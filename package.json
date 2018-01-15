@@ -1,0 +1,18 @@
+{
+  "name": "detox-ic",
+  "version": "0.0.1",
+  "description": "Detox-Intercommunication allows for multiple simulators to communicate with each other.",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Hai Ngoc Duong",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.17.1"
+  },
+  "devDependencies": {
+    "standard": "^10.0.3"
+  }
+}
