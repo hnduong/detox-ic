@@ -20,7 +20,7 @@ if (process.argv.indexOf('--attempts') > -1) {
   defaultAttempts = Number(process.argv[process.argv.indexOf('--attempts') + 1])
 }
 
-log(`***************Attempts: ${defaultAttempts}`)
+log(`***************Attempts: ${defaultAttempts}***************`)
 
 // node_modules/.bin/mocha e2e --opts e2e/mocha.opts --configuration ios.sim.sim1.debug
 // configuration => ios.sim.sim1.debug
