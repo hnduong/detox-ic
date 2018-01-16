@@ -1,27 +1,11 @@
 /* @flow */
 const http = require('http')
 const { URL } = require('url')
+const ACTIONS = require('./actions')
 const port = 8335
 const DEBUG = false
 
 const globalState = {}
-
-const isPortFree = port =>
-  new Promise((resolve, reject) => {
-    const tester = http
-      .createServer()
-      .once(
-        'error',
-        err =>
-          err.code === 'EADDRINUSE'
-            ? (tester.close(), resolve(true))
-            : reject(err)
-      )
-      .once('listening', () =>
-        tester.once('close', () => resolve(false)).close()
-      )
-      .listen(port)
-  })
 
 const requestHandler = (request, response) => {
   const searchParams /*: any */ = new URL(request.url, 'http://localhost/')
@@ -33,29 +17,30 @@ const requestHandler = (request, response) => {
 
   if (DEBUG) {
     console.log(
-      `=> [SYNC_SERVER][${configuration}] action:`,
+      `********[SYNC_SERVER][${configuration}] action:`,
       action,
       'payload: ',
-      payload
+      payload,
+      '********'
     )
-    console.log(`=> [SYNC_SERVER][${configuration}] before`, globalState)
+    console.log(`********[SYNC_SERVER][${configuration}] before`, globalState, '********')
   }
 
   switch (action) {
-    case 'register':
+    case ACTIONS.REGISTER:
       globalState[configuration] = {
         events: [],
         shared: {}
       }
       response.end(configuration + ' is registered')
       break
-    case 'report':
+    case ACTIONS.REPORT:
       globalState[configuration].events = globalState[configuration].events
         .filter(e => e !== payload)
         .concat([payload])
       response.end(payload + ' is registered')
       break
-    case 'share': {
+    case ACTIONS.SHARE: {
       const shared = JSON.parse(decodeURIComponent(payload))
       globalState[configuration].shared = {
         ...globalState[configuration].shared,
@@ -64,7 +49,7 @@ const requestHandler = (request, response) => {
       response.end(payload + ' is shared')
       break
     }
-    case 'get_shared':
+    case ACTIONS.GET_SHARED:
       const otherSideKey = Object.keys(globalState).find(
         key => key !== configuration
       )
@@ -75,7 +60,7 @@ const requestHandler = (request, response) => {
       }
       response.end(JSON.stringify(globalState[otherSideKey].shared))
       break
-    case 'check':
+    case ACTIONS.CHECK:
       // check if this event happened with all clients
       const allCompleted =
         Object.values(globalState).filter(

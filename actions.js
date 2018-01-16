@@ -1,0 +1,7 @@
+module.exports = {
+  REGISTER: 'REGISTER',
+  REPORT: 'REPORT',
+  SHARE: 'SHARE',
+  GET_SHARED: 'GET_SHARED',
+  CHECK: 'CHECK'
+}
