@@ -1,7 +1,11 @@
 {
   "name": "@hai5/detox-ic",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "public": "true",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hnduong/detox-ic"
+  },
   "description": "Detox-Intercommunication allows for multiple simulators to communicate with each other.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
