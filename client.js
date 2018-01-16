@@ -16,8 +16,20 @@ const log = (...args) => {
 
 let defaultAttempts = 100
 
+let checkInterval = 2000
+
 if (process.argv.indexOf('--attempts') > -1) {
-  defaultAttempts = Number(process.argv[process.argv.indexOf('--attempts') + 1])
+  const a = process.argv[process.argv.indexOf('--attempts') + 1]
+  if (a === parseInt(a, 10)) {
+    defaultAttempts = a
+  }
+}
+
+if (process.argv.indexOf('--interval') > -1) {
+  const i = process.argv[process.argv.indexOf('--interval') + 1]
+  if (i === parseInt(i, 10)) {
+    checkInterval = i
+  }
 }
 
 log(`***************Attempts: ${defaultAttempts}***************`)
@@ -54,7 +66,7 @@ module.exports = {
       }
       log(`********************${eventName} ${configuration} is not synced yet.********************`)
       if (attempts < defaultAttempts) {
-        await delay(2000)
+        await delay(checkInterval)
         attempts++
         return check()
       }
