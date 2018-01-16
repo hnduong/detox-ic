@@ -1,6 +1,6 @@
 {
   "name": "@hai5/detox-ic",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "public": "true",
   "main": "client.js",
   "repository": {

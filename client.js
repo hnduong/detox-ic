@@ -39,12 +39,12 @@ const request = async (action, event) => {
 
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration))
 
-request('register')
+request(ACTIONS.REGISTER)
 
 module.exports = {
   ACTIONS,
-  async waitUntil (eventName) {
-    let attempts = defaultAttempts
+  async waitUntil(eventName) {
+    let attempts = 0
     const check = async () => {
       const res = await request(ACTIONS.CHECK, eventName)
       log(res)
@@ -53,27 +53,26 @@ module.exports = {
         return true
       }
       log(`********************${eventName} ${configuration} is not synced yet.********************`)
-      if (attempts < 100) {
-        await delay(500)
+      if (attempts < defaultAttempts) {
+        await delay(2000)
         attempts++
         return check()
       }
       throw new Error(`[${configuration}] Couldn't sync ${eventName} after ${attempts} attempts`)
     }
-    const checked = await check()
-    return checked
+    return await check()
   },
-  async report (eventName) {
+  async report(eventName) {
     return request(ACTIONS.REPORT, eventName)
   },
-  async syncEvent (eventName) {
+  async syncEvent(eventName) {
     await this.report(eventName)
     await this.waitUntil(eventName)
   },
-  shareVar (name, value) {
+  shareVar(name, value) {
     return request(ACTIONS.SHARE, encodeURIComponent(`{"${name}":"${value}"}`))
   },
-  async getSharedVars () {
+  async getSharedVars() {
     const text = await request(ACTIONS.GET_SHARED)
     return JSON.parse(text)
   }
